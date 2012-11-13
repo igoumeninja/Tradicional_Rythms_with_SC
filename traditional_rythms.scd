@@ -4,8 +4,9 @@ Aris Bezas 121111 Igoumeninja
 */
 //:!boot the server
 s.boot;
-//===== PART ONE =========//
+//============================//
 //:Start with default Pbind
+//============================//
 (
 Pbind(
 	\amp,            Pseq([1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1], inf),
@@ -41,14 +42,16 @@ Pbind(
 ).play;
 )
 
-//===== PART TWO =========//
+//==========================================//
 //:PlayBuf Synth make it more interesting
+//==========================================//
 
+(
 //:Load the buffers
 ~dum = Buffer.read(s, "/Users/ari/Media/sounds/percusion/bass_Drum_Single_Kick.aiff");
 ~te = Buffer.read(s, "/Users/ari/Media/sounds/percusion/gonga_single_hit.aiff");
 ~bell = Buffer.read(s, "/Users/ari/Media/sounds/percusion/agogo_bell.aiff");
-
+)
 
 (
 SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1 |
@@ -57,9 +60,48 @@ SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1 |
 }).store;
 )
 
-//======== GVerb ==============
 (
-SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 0.6, damping = 0.62, mulVerb = 1 |
+//Aptaliko Zeimpekiko
+Pbind(
+    \instrument,     \dum,
+	\bufnum,         Pseq([
+		~dum, 0,~te, 0, ~te, 0,
+		~dum, 0, ~te, ~te,
+		~dum, 0, ~te, 0,
+		~dum, 0, ~te, ~te], inf),
+	\amp,            Pseq([
+		1, 0, 1, 0, 1, 0,
+		1, 0, 1, 1,
+		1, 0, 1, 0,
+		1, 0, 1, 1], inf),
+	\dur,            Pseq([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]/2, inf),
+).play;
+)
+
+//==========================================//
+//:Control BPM
+//==========================================//
+(
+//Kalamatianos (7/8, 3-2-2)
+~bpm = 120;
+~ratio = ~bpm/60;
+~ratio = ~ratio*2; //this is because we count 8a (half quarter)
+
+Pbind(
+    \instrument,     \dum,
+	\bufnum,         Pseq([
+		~dum, 0, ~te, ~dum, 0, ~te, 0
+	], inf),
+	\amp,            Pseq([1, 0, 1, 1, 0, 1, 0], inf),
+	\dur,            Pseq([1, 1, 1, 1, 1, 1, 1]/~ratio, inf),
+).play;
+)
+
+//==========================================//
+//======== GVerb ===========//
+//==========================================//
+(
+SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
 	Out.ar(0,
 		Pan2.ar(
 			GVerb.ar(
@@ -78,13 +120,13 @@ SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roo
 
 (
 //Bayon - Pogonisio
-~bpm = 60;
+~bpm = 160;
 ~ratio = ~bpm/60;
 ~ratio = ~ratio*2; //this is because we count 8a (half quarter)
 
 Pbind(
     \instrument,     \dum,
-	\rommsize,       Pseq([1, 2, 3, 4, 5], inf),
+	\roomsize,       Pseq([10, 20, 30, 4, 50], inf),
 	\bufnum,         Pseq([
 		~dum, ~te,
 		~te,  ~te,
@@ -95,7 +137,8 @@ Pbind(
 	\dur,            Pseq([1, 1, 1, 1, 1, 1, 1, 1]/~ratio, inf),
 ).play;
 )
-
+//==========================================//
+//==========================================//
 (
 //Aptaliko Zeimpekiko
 Pbind(
@@ -132,7 +175,7 @@ Pbind(
 
 (
 //Mantilatos (2+2+3) from [[http://www.musicking.gr/%CE%A1%CF%85%CE%B8%CE%BC%CF%8C%CF%82/?lang=el]]
-~bpm = 240;
+~bpm = 340;
 ~ratio = ~bpm/60;
 ~ratio = ~ratio*2; //this is because we count 8a (half quarter)
 
@@ -143,7 +186,7 @@ Pbind(
 		~te,  0,
 		~te,  0, 0,
 		~dum, 0,
-		~dum, 0,
+		~te, 0,
 		~te,  0, 0
 	], inf),
 	\amp,            Pseq([1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0], inf),
