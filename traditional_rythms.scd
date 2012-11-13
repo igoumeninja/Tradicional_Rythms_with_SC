@@ -56,6 +56,46 @@ SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1 |
 		2), 0, amp));
 }).store;
 )
+
+//======== GVerb ==============
+(
+SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 0.6, damping = 0.62, mulVerb = 1 |
+	Out.ar(0,
+		Pan2.ar(
+			GVerb.ar(
+				PlayBuf.ar(1,bufnum:bufnum, doneAction:2),
+				roomsize,
+				revtime,
+				damping,
+				mul: mulVerb
+			)
+			+
+			PlayBuf.ar(1,bufnum:bufnum, doneAction:2),
+			0, amp)
+	);
+}).store;
+)
+
+(
+//Bayon - Pogonisio
+~bpm = 60;
+~ratio = ~bpm/60;
+~ratio = ~ratio*2; //this is because we count 8a (half quarter)
+
+Pbind(
+    \instrument,     \dum,
+	\rommsize,       Pseq([1, 2, 3, 4, 5], inf),
+	\bufnum,         Pseq([
+		~dum, ~te,
+		~te,  ~te,
+		~dum,  ~te,
+		~te, 0,
+	], inf),
+	\amp,            Pseq([1, Prand([0, 1],1), 1, 1, 1, Prand([0, 1],1), 1, 0], inf),
+	\dur,            Pseq([1, 1, 1, 1, 1, 1, 1, 1]/~ratio, inf),
+).play;
+)
+
 (
 //Aptaliko Zeimpekiko
 Pbind(

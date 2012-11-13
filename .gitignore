@@ -9,5 +9,8 @@ bin-release/
 .project
 
 # media folder
-
 media
+
+# emacs temp files
+
+.*~
