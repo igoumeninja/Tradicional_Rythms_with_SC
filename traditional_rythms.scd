@@ -119,6 +119,24 @@ SynthDef(\dum, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roo
 )
 
 (
+//Tsamiko
+~bpm = 160;
+~ratio = ~bpm/60;
+~ratio = ~ratio*2; //this is because we count 8a (half quarter)
+
+Pbind(
+    \instrument,     \dum,
+	\bufnum,         Pseq([
+		~dum, 0, 0, ~te,
+		~te,  0, ~te, 0,
+		~dum, 0, ~te, 0
+	], inf),
+	\amp,            Pseq([1,0,0,1,1,0,1,0,1,0,1,0], inf),
+	\dur,            Pseq([1,1,1,1,1,1,1,1,1,1,1,1]/~ratio, inf),
+).play;
+)
+
+(
 //Bayon - Pogonisio
 ~bpm = 160;
 ~ratio = ~bpm/60;
