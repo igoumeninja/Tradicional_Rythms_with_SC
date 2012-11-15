@@ -3,8 +3,8 @@ OOP with tradicional rythms
 Aris Bezas 121115
 
 Examples:
-~bpm = 2;
-Rythm.xasapiko
+~bps = 2;
+Rythms.xasapiko2
 ~rythm.play;
 
 ------ MORE ---------
@@ -75,14 +75,33 @@ Rythm_Class {
 		);
 	}
 }
-
-Rythm {
+//========================================================================
+//========================================================================
+//========================================================================
+Rythms {
 	*xasapiko {
-		~ampPPatt.source = Pseq([1, 0.5], inf);
+		~bufnumPPatt.source = Pseq([~dum, ~te], inf);
+		~ampPPatt.source = Pseq([1, 1], inf);
 		~durPPatt.source = Pseq([1, 1]/~bpm, inf);
 	}
 	*xasapiko2 {
-		~ampPPatt.source = Pseq([1, 0.5], inf);
-		~durPPatt.source = Pseq([1, 1]/~bpm, inf);
+		~bufnumPPatt.source = Pseq([
+			~dum,   0,
+			~te,  ~te,
+			~dum,   0,
+			~te,  0
+		], inf);
+		~ampPPatt.source = Pseq([
+			1,0,
+			1,1,
+			1,0,
+			1,1
+		], inf);
+		~durPPatt.source = Pseq([
+			1,1,
+			1,1,
+			1,1,
+			1,1
+		]/~bpm, inf);
 	}
 }
