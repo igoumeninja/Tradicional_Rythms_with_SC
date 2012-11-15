@@ -3,11 +3,12 @@ OOP with tradicional rythms
 Aris Bezas 121115
 
 Examples:
-
+~bpm = 2;
 Rythm.xasapiko
 ~rythm.play;
 
 ------ MORE ---------
+~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
 ~bufnumPPatt.source = Pseq([~dum, ~te], inf);
 ~ampPPatt.source = Pseq([1, 0.5], inf);
 ~durPPatt.source = Pseq([1, 1]/2, inf);
@@ -37,7 +38,7 @@ Rythm_Class {
 
 	}
 	*sendTheSynths	{
-		SynthDef(\simplePlyBuf, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1 |
+		SynthDef(\simplePlayBuf, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1 |
 			Out.ar(0, Pan2.ar(PlayBuf.ar(1,bufnum:bufnum,doneAction:
 				2), 0, amp));
 		}).store;
@@ -60,13 +61,14 @@ Rythm_Class {
 	}
 
 	*defineProxyPattern {
+		~instrumentPPatt = PatternProxy(Pseq([\simplePlayBuf], inf));
 		~bufnumPPatt = PatternProxy(Pseq([~dum, ~te], inf));
 		~ampPPatt = PatternProxy(Pseq([1, 1], inf));
 		~durPPatt = PatternProxy(Pseq([1, 1], inf));
 
 
 		~rythm = Pbind(
-			\instrument,     \simplePlyBuf,
+			\instrument,     \simplePlayBuf,
 			\bufnum,         ~bufnumPPatt,
 			\amp,            ~ampPPatt,
 			\dur,            ~durPPatt,
@@ -75,12 +77,12 @@ Rythm_Class {
 }
 
 Rythm {
-	var <>bpmi;
-	*bpm {
-		//~durPPatt.source = Pseq([1, 1]/bpmi, inf);
-	}
 	*xasapiko {
 		~ampPPatt.source = Pseq([1, 0.5], inf);
-		~durPPatt.source = Pseq([1, 1]/5, inf);
+		~durPPatt.source = Pseq([1, 1]/~bpm, inf);
+	}
+	*xasapiko2 {
+		~ampPPatt.source = Pseq([1, 0.5], inf);
+		~durPPatt.source = Pseq([1, 1]/~bpm, inf);
 	}
 }
