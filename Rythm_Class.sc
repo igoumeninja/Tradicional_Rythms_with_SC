@@ -4,12 +4,13 @@ Aris Bezas 121115
 
 Examples:
 ~bps = 2;
-Rythms.xasapiko2
+Rythms.xasapiko
 ~rythm.play;
+Rythms.changeBPS(2)
 
 ------ MORE ---------
 ~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
-~bufnumPPatt.source = Pseq([~dum, ~te], inf);
+~bufnumPPatt.source = Pseq([~, ~te], inf);
 ~ampPPatt.source = Pseq([1, 0.5], inf);
 ~durPPatt.source = Pseq([1, 1]/2, inf);
 
@@ -25,7 +26,7 @@ Rythm_Class {
 				this.defineProxyPattern;
 				"\n|====================|".postln;
 				"|Rythm Class is ready|".postln;
-				"|====================|".postln;
+				"|====================|\n".postln;
 			};
 		}
 	}
@@ -75,14 +76,19 @@ Rythm_Class {
 		);
 	}
 }
+
 //========================================================================
 //========================================================================
 //========================================================================
+
 Rythms {
+	*changeBPS { |bps|
+		~durPPatt.source = ~durPPatt.source*bps;
+	}
 	*xasapiko {
 		~bufnumPPatt.source = Pseq([~dum, ~te], inf);
 		~ampPPatt.source = Pseq([1, 1], inf);
-		~durPPatt.source = Pseq([1, 1]/~bpm, inf);
+		~durPPatt.source = Pseq([1, 1], inf);
 	}
 	*xasapiko2 {
 		~bufnumPPatt.source = Pseq([
@@ -102,6 +108,6 @@ Rythms {
 			1,1,
 			1,1,
 			1,1
-		]/~bpm, inf);
+		]/~bps, inf);
 	}
 }
