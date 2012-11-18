@@ -5,9 +5,10 @@ Aris Bezas 121115
 Examples:
 ~bps = 2;
 Rythms.karsilamas
+Rythms.xasapiko
 ~rythm.play;
 ~rythm2.play;
-Rythm_Class.changeBPS(0.2)
+Rythm_Class.changeBPS(0.8)
 
 ------ MORE ---------
 ~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
