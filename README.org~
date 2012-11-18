@@ -1,4 +1,9 @@
 Tradicional_Rythms_with_SC
 ==========================
 
-Paly Traditional Rythms with SuperCollider
+Play Traditional Rythms with SuperCollider
+
+
+* TODO Interface
+
+x = Rythm.new(\xasapiko, bps:120)

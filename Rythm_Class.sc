@@ -15,14 +15,17 @@ Rythm_Class.changeBPS(0.2)
 ~ampPPatt.source = Pseq([1, 0.5], inf);
 ~durPPatt.source = Pseq([1, 1]/2, inf);
 ~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~te], inf);
+~bufnumPPatt.source = Pseq([~tambourine, ~tambourine,~tambourine, ~te,~dum, ~te,~dum, ~te,~te], inf);
 ~bufnumPPatt.source = Pseq([~dum, ~te,~te, ~te,~dum, ~te,~dum, ~te,~te], inf);
 ~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~bell], inf);
 ~bufnumPPatt.source = Pseq([~dum, ~bell,~dum, ~bell,~dum, ~bell,~dum, ~bell,~bell], inf);
 
 ~bufnumPPatt.source = Pseq([~motoLoop, ~te,~motoLoop, ~te,~motoLoop, ~te,~motoLoop, ~motoLoop,~motoLoop], inf);
 
+//Looper
 x = Synth(\simplePlayBuf,[\bufnum, ~motoLoop, \loop, 1]);
-y = Synth(\gverb_mic)
+
+//GVerb
 //living room
 a = Synth(\gverb_mic, [\roomsize, 16, \revtime, 1.24, \damping, 0.10, \inputbw, 0.95, \drylevel -3, \earlylevel, -15, \taillevel, -17]);
 a.free;
@@ -61,6 +64,7 @@ Rythm_Class {
 		~dum = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/bass_Drum_Single_Kick.aiff");
 		~te = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/gonga_single_hit.aiff");
 		~bell = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/agogo_bell.aiff");
+		~tambourine = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/tambourine.aiff");
 		~motoLoop = Buffer.read(Server.default, "/Users/ari/Media/sounds/loops/MotownDrummer08.aif");
 	}
 	*sendTheSynths	{
@@ -83,13 +87,13 @@ Rythm_Class {
 					PlayBuf.ar(1,bufnum:bufnum, doneAction:2),
 					0, amp)
 			);
-		}).store;
+		}).send(Server.default);
 
-		SynthDef(\gverb_mic, {arg roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel,
-			taillevel;
-			var a = SoundIn.ar(0);
-			Out.ar(0, GVerb.ar(
-				a,
+		SynthDef(\gverb_mic, {
+			|roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel, pos = 0, amp = 1,
+			taillevel|
+			Out.ar(0, Pan2.ar(GVerb.ar(
+				SoundIn.ar(0),
                 roomsize,
                 revtime,
                 damping,
@@ -98,7 +102,10 @@ Rythm_Class {
                 drylevel.dbamp,
                 earlylevel.dbamp,
                 taillevel.dbamp,
-				roomsize, 0.3) + a)
+				roomsize, 0.3) + SoundIn.ar(0)),
+				pos,
+				amp)
+
 		}).store;
 	}
 

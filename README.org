@@ -3,7 +3,14 @@ Tradicional_Rythms_with_SC
 
 Play Traditional Rythms with SuperCollider
 
-
-* TODO Interface
+|--------|
+| *TODO* |
+|--------|
+* Interface
 
 x = Rythm.new(\xasapiko, bps:120)
+* Parallel Patterns
+
+Create  
+~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~te], inf);
+for each sample (~dum, ~te, ...) and after that you can control only the ampPPatt.
