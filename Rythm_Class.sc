@@ -61,8 +61,8 @@ ratios
 
 Rythm.play
 Rythm.trionXronon //Dontiapikna
-Rythm.mantilatos(1,120)
-Rythm.tsifteteli(1, 60)
+Rythm.mantilatos(1,160)
+Rythm.tsifteteli(5,60)
 
 Rythm.stop
 */
@@ -74,8 +74,9 @@ Rythm {
 		StartUp add: {
 			if (not(Server.default.serverRunning)) { Server.default.boot };
 			Server.default.doWhenBooted {
-				//ratio= [2/4,     4/4,    8/8,    3/4,   7/8,   9/8]
-				~ratio = [0.1/6, 0.1/3,  1/30, 0.4/18, 0.1/3, 0.1/3];
+				//ratio= [  0,       1,      2,      3,        4,       5,      6,       7]
+				//ratio= [2/4,     4/4,    8/8,  16/16,    33/32,     3/4,    7/8,     9/8]
+				~ratio = [0.1/6, 0.1/6,  1/30,     1/15,    2/15,  0.4/18,   1/15,   0.1/3];
 				~bpm = 60;
 				this.loadTheBuffers;
 				this.sendTheSynths;
@@ -147,7 +148,6 @@ Rythm {
 		~ampPPatt = PatternProxy(Pseq([0, 0], inf));
 		~durPPatt = PatternProxy(Pseq([1, 1], inf));
 
-
 		~rythm = Pbind(
 			\instrument,     \simplePlayBuf,
 			\bufnum,         ~bufnumPPatt,
@@ -175,7 +175,7 @@ Rythm {
 		~durPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
 	}
 	*mantilatos { |version, bpm|
-		~bpm = ~ratio[4]*bpm;
+		~bpm = ~ratio[6]*bpm;
 		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
 		case
 		{version == 1} {
@@ -191,13 +191,31 @@ Rythm {
 			~ampPPatt.source = Pseq([1, 0, 1, 0, 1, 0, 0], inf);
 		};
 	}
-	*tsifteteli { |version, bpm = 100|
-		~bpm = ~ratio[1]*bpm;
-		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
+	*tsifteteli { |version, bpm|
+		~bpm = ~ratio[3]*bpm;
+		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
 		case
 		{version == 1} {
+			~bpm = ~ratio[2]*bpm;
+			~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
 			~bufnumPPatt.source = Pseq([~dum, ~te, 0, ~te, ~dum, 0, ~te, 0], inf);
 			~ampPPatt.source =    Pseq([1,    1,   0, 1,   1,    0, 1,   0], inf);
+		}
+		{version == 2} {
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, 0, ~te, ~te, ~te, 0, ~dum, 0, ~te, ~te, ~te, 0, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0, 1,   0, 1,   1,   1,   0,    1, 0,   1,   1,   1, 0,   1,   1], inf);
+		}
+		{version == 3} {
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, 0, ~te, ~te, ~te, 0, ~dum, ~te, ~te, ~te, ~te, 0, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1, 0,   1,   1,   1, 0,    1,   1,   1,   1,   1, 0,   1,   1], inf);
+		}
+		{version == 4} {
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~te, ~te, ~te, ~te, 0, ~dum,   0, ~te, ~te,   ~te, 0, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,   1,   1,   1, 0,    1,   0,   1,   1,     1, 0,   1,   1], inf);
+		}
+		{version == 5} {
+			~bufnumPPatt.source = Pseq([~dum, 0, ~dum, 0, ~te, ~te, ~te, 0, ~dum,   0, ~te, ~te,   ~te, 0, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,  0,   1,   1,   1, 0,    1,   0,   1,   1,     1, 0,   1,   1], inf);
 		};
 	}
 }
