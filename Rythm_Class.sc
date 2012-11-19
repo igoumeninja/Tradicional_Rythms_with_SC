@@ -4,11 +4,13 @@ Aris Bezas 121115
 
 Examples:
 ~bps = 2;
-Rythms.karsilamas
+Rythm.mantilatos
+Rythm.karsilamas
 Rythms.xasapiko
 ~rythm.play;
+~rythm.stop
 ~rythm2.play;
-Rythm_Class.changeBPS(0.8)
+Rythm_Class.changeBPM(0.5)
 
 ------ MORE ---------
 ~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
@@ -43,13 +45,37 @@ a = Synth(\gverb_mic, [\roomsize, 243, \revtime, 1, \damping, 0.1, \inputbw, 0.3
 a = Synth(\gverb_mic, [\roomsize, 300, \revtime, 103, \damping, 0.43, \inputbw, 0.51, \drylevel -5, \earlylevel, -26, \taillevel, -20]);
 
 x.set()
-*/
-Rythm_Class {
 
+//=========
+ratios
+1: 4/4
+2: 3/4
+3: 7/8
+4: 9/8
+
+//====================
+Rythm.start
+1: Xasapiko
+2: Mantialtos
+
+Rythm.defineRythm()
+Rythm.kind(2)
+Rythm.play
+Rythm.define(2,220)
+Rythm.stop
+		~rythm.play;
+*/
+
+
+
+Rythm {
 	*initClass {
 		StartUp add: {
 			if (not(Server.default.serverRunning)) { Server.default.boot };
 			Server.default.doWhenBooted {
+				//ratio= [2/4,     4/4,    8/8,    3/4,   7/8,   9/8]
+				~ratio = [0.1/6, 0.1/6,  1/30, 0.4/18, 0.1/3, 0.1/3];
+				~bpm = 60;
 				this.loadTheBuffers;
 				this.sendTheSynths;
 				this.defineProxyPattern;
@@ -57,8 +83,31 @@ Rythm_Class {
 				"|Rythm Class is ready|".postln;
 				"|====================|\n".postln;
 			};
+
 		}
 	}
+
+	*define { |rythm, bpm |
+		rythm = case
+		{ rythm == 1 }   {
+			~bpm = ~ratio[0]*bpm;
+			~durPPatt.source = Pseq([1, 1], inf)/~bpm;
+			this.xasapiko;
+			~myRythmIs = 1
+		}
+		{ rythm == 2 }   {
+			~bpm = ~ratio[4]*bpm;
+			~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
+			this.mantilatos;
+			~myRythmIs = 2
+		}
+		{ rythm == 3 }   { ~bpm = ~ratio[5]*bpm; this.karsilamas;  ~myRythmIs = 3}
+		{ rythm == 0 }   { ~bpm = 0 };
+
+
+	}
+	*play {~rythm.play;}
+	*stop {~rythm.stop;}//Doesn't work
 
 	*loadTheBuffers	{
 
@@ -113,7 +162,7 @@ Rythm_Class {
 	*defineProxyPattern {
 		~instrumentPPatt = PatternProxy(Pseq([\simplePlayBuf], inf));
 		~bufnumPPatt = PatternProxy(Pseq([~dum, ~te], inf));
-		~ampPPatt = PatternProxy(Pseq([1, 1], inf));
+		~ampPPatt = PatternProxy(Pseq([0, 0], inf));
 		~durPPatt = PatternProxy(Pseq([1, 1], inf));
 
 
@@ -124,20 +173,11 @@ Rythm_Class {
 			\dur,            ~durPPatt,
 		);
 	}
-	*changeBPS { |bps|
-		~durPPatt.source = ~durPPatt.source*bps;
-	}
-}
 
-//========================================================================
-//========================================================================
-//========================================================================
-
-Rythms {
+	//Rythms
 	*xasapiko {
 		~bufnumPPatt.source = Pseq([~dum, ~te], inf);
 		~ampPPatt.source = Pseq([1, 1], inf);
-		~durPPatt.source = Pseq([1, 1], inf);
 	}
 	*xasapiko2 {
 		~bufnumPPatt.source = Pseq([
@@ -164,5 +204,8 @@ Rythms {
 		~ampPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
 		~durPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
 	}
-
+	*mantilatos {
+		~bufnumPPatt.source = Pseq([~dum, 0,~te, 0, ~te,0, 0], inf);
+		~ampPPatt.source = Pseq([1, 0, 1, 0, 1, 0, 0], inf);
+	}
 }
