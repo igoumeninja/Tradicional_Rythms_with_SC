@@ -1,34 +1,17 @@
 /*
+Rythm
 OOP with tradicional rythms
 Aris Bezas 121115
 
-Examples:
-~bps = 2;
-Rythm.mantilatos
-Rythm.karsilamas
-Rythms.xasapiko
-~rythm.play;
-~rythm.stop
-~rythm2.play;
-Rythm_Class.changeBPM(0.5)
+SCDoc
 
------- MORE ---------
-~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
-~bufnumPPatt.source = Pseq([~, ~te], inf);
-~ampPPatt.source = Pseq([1, 0.5], inf);
-~durPPatt.source = Pseq([1, 1]/2, inf);
-~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~te], inf);
-~bufnumPPatt.source = Pseq([~tambourine, ~tambourine,~tambourine, ~te,~dum, ~te,~dum, ~te,~te], inf);
-~bufnumPPatt.source = Pseq([~dum, ~te,~te, ~te,~dum, ~te,~dum, ~te,~te], inf);
-~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~bell], inf);
-~bufnumPPatt.source = Pseq([~dum, ~bell,~dum, ~bell,~dum, ~bell,~dum, ~bell,~bell], inf);
-
-~bufnumPPatt.source = Pseq([~motoLoop, ~te,~motoLoop, ~te,~motoLoop, ~te,~motoLoop, ~motoLoop,~motoLoop], inf);
-
-//Looper
+=================
+Looper
 x = Synth(\simplePlayBuf,[\bufnum, ~motoLoop, \loop, 1]);
 
-//GVerb
+==================
+MicIn with GVerb
+
 //living room
 a = Synth(\gverb_mic, [\roomsize, 16, \revtime, 1.24, \damping, 0.10, \inputbw, 0.95, \drylevel -3, \earlylevel, -15, \taillevel, -17]);
 a.free;
@@ -44,40 +27,45 @@ a = Synth(\gverb_mic, [\roomsize, 243, \revtime, 1, \damping, 0.1, \inputbw, 0.3
 // canyon
 a = Synth(\gverb_mic, [\roomsize, 300, \revtime, 103, \damping, 0.43, \inputbw, 0.51, \drylevel -5, \earlylevel, -26, \taillevel, -20]);
 
-x.set()
 =====================
 Pitch change
 
 Rythm.play
+Rythm.trionXronon(18) //Dontiapikna
+~ratePPatt.source = Pseq([8], inf);
 ~instrumentPPatt.source = Pseq([\phasorPlayBuf], inf);
 ~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
 ~instrumentPPatt.source = Pseq([\simplePlayBuf], inf);
 
-
 //=========
-ratios
+Ratios
 1: 4/4
 2: 3/4
 3: 7/8
 4: 9/8
 
 //====================
-1: Xasapiko
-2: Mantialtos v.1
-3: Mantialtos v.2
-4: Mantialtos v.3
-
-~dum = ~gonga
+Rythms
 Rythm.play
 Rythm.trionXronon(18) //Dontiapikna
 Rythm.xasapiko(0,100) //Katerina, Toumpourlika
-Rythm.mantilatos(3,100)
+Rythm.mantilatos(1,120)
 Rythm.tsifteteli(1,90)
 Rythm.tsifteteli(5,90)
 
 
+//==================
+Change buffer
+~dum = ~bell
+
 Rythm.stop
+
+============
+SCDoc
+
+Rythm
 */
+
 
 Rythm {
 	*initClass {
@@ -94,7 +82,6 @@ Rythm {
 				"\n|====================|".postln;
 				"|Rythm Class is ready|".postln;
 				"|====================|\n".postln;
-				~rythm.play;
 			};
 
 		}
@@ -125,9 +112,10 @@ Rythm {
 		//\phasorPlayBuf
 		SynthDef(\phasorPlayBuf, { | out, freq = 440, amp = 2, bufnum = 10, pan = 0, gate = 1, loop = 0, rate = 1|
 			var playBuf, phasor;
-			playBuf = PlayBuf.ar(1,bufnum:bufnum,doneAction:2);
-			phasor = Phasor.ar(0, BufRateScale.kr(bufnum)*rate);
-			Out.ar(0, Pan2.ar(phasor, loop: loop), 0, amp);
+			//phasor = Phasor.ar(0, BufRateScale.kr(bufnum)*rate, 0, BufFrames.kr(bufnum));
+			//playBuf = BufRd.ar(1, bufnum, phase:phasor,loop:0,interpolation:1);
+			playBuf = PlayBuf.ar(1,bufnum,BufRateScale.kr(bufnum)*rate,loop,doneAction:2);
+			Out.ar(0, Pan2.ar(playBuf, 0, amp));
 		}).store;
 
 		//doesn't work
@@ -191,12 +179,14 @@ Rythm {
 
 	*defineProxyPattern {
 		~instrumentPPatt = PatternProxy(Pseq([\simplePlayBuf], inf));
+		~ratePPatt = PatternProxy(Pseq([1], inf));
 		~bufnumPPatt = PatternProxy(Pseq([~dum, ~te], inf));
 		~ampPPatt = PatternProxy(Pseq([0, 0], inf));
 		~durPPatt = PatternProxy(Pseq([1, 1], inf));
 
 		~rythm = Pbind(
 			\instrument,     ~instrumentPPatt,
+			\rate,           ~ratePPatt,
 			\bufnum,         ~bufnumPPatt,
 			\amp,            ~ampPPatt,
 			\dur,            ~durPPatt,
@@ -204,7 +194,7 @@ Rythm {
 	}
 
 	//Rythms
-	*xasapiko { |version,bpm|
+	*xasapiko { |bpm|
 		~bpm = ~ratio[0]*bpm;
 		~durPPatt.source = Pseq([1, 1], inf)/~bpm;
 		~bufnumPPatt.source = Pseq([~dum, ~te], inf);

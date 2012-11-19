@@ -9,7 +9,9 @@ Rythm is a tool to play tradicional rythms with SuperCollider
 CLASSMETHODS::
 
 METHOD:: initClass
- Load the Buffers, store the Synhts, and define ProxyPattern
+-loadTheBuffers;
+-sendTheSynths;
+-defineProxyPattern;
 
 METHOD:: play
 code::
@@ -19,32 +21,16 @@ Rythm.play;
 METHOD:: stop
 
 METHOD:: sendTheSynths
-code::
-~instrumentPPatt.source = Pseq([\phasorPlayBuf], inf);
-~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
-~instrumentPPatt.source = Pseq([\simplePlayBuf], inf);
-::
+- \simplePlayBuf
+- \phasorPlayBuf
+- \playBufGVerb
+- \playBufGVerbPhasor
 
-For Mic Input
-code::
-//living room
-a = Synth(\gverb_mic, [\roomsize, 16, \revtime, 1.24, \damping, 0.10, \inputbw, 0.95, \drylevel -3, \earlylevel, -15, \taillevel, -17]);
-a.free;
+- \gverb_mic
 
-//church
-a = Synth(\gverb_mic, [\roomsize, 80, \revtime, 4.85, \damping, 0.41, \inputbw, 0.19, \drylevel -3, \earlylevel, -9, \taillevel, -11]);
-a.free;
-
-// cathedral
-a = Synth(\gverb_mic, [\roomsize, 243, \revtime, 1, \damping, 0.1, \inputbw, 0.34, \drylevel -3, \earlylevel, -11, \taillevel, -9]);
-4a.free
-
-// canyon
-a = Synth(\gverb_mic, [\roomsize, 300, \revtime, 103, \damping, 0.43, \inputbw, 0.51, \drylevel -5, \earlylevel, -26, \taillevel, -20]);
-::
+returns:: (describe returnvalue here)
 
 METHOD:: defineProxyPattern
-code::
 ~instrumentPPatt = PatternProxy(Pseq([\simplePlayBuf], inf));
 ~ratePPatt = PatternProxy(Pseq([1], inf));
 ~bufnumPPatt = PatternProxy(Pseq([~dum, ~te], inf));
@@ -58,26 +44,27 @@ code::
 	\amp,            ~ampPPatt,
 	\dur,            ~durPPatt,
 );
-::
+
+returns:: (describe returnvalue here)
 
 METHOD:: xasapiko
-code::
-~bufnumPPatt.source = Pseq([~dum, ~te], inf);
-~ampPPatt.source = Pseq([1, 1], inf);
-::
+(describe method here)
+
+ARGUMENT:: version
+(describe argument here)
 
 ARGUMENT:: bpm
-Define bpm
+(describe argument here)
+
+returns:: (describe returnvalue here)
 
 METHOD:: trionXronon
-code::
-~bufnumPPatt.source = Pseq([~dum, ~te, ~te], inf);
-~ampPPatt.source = Pseq([1, 1, 1], inf);
-::
-
+(describe method here)
 
 ARGUMENT:: bpm
-Define bpm
+(describe argument here)
+
+returns:: (describe returnvalue here)
 
 METHOD:: karsilamas
 (describe method here)
@@ -124,7 +111,5 @@ INSTANCEMETHODS::
 EXAMPLES::
 
 code::
-Rythm.trionXronon(18) //Dontia Pykna
-Rythm.xasapiko(0,100) //Katerina, Toumpourlika
-Rythm.mantilatos(1,120)
+(some example code)
 ::
