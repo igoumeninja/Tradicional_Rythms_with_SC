@@ -45,6 +45,14 @@ a = Synth(\gverb_mic, [\roomsize, 243, \revtime, 1, \damping, 0.1, \inputbw, 0.3
 a = Synth(\gverb_mic, [\roomsize, 300, \revtime, 103, \damping, 0.43, \inputbw, 0.51, \drylevel -5, \earlylevel, -26, \taillevel, -20]);
 
 x.set()
+=====================
+Pitch change
+
+Rythm.play
+~instrumentPPatt.source = Pseq([\phasorPlayBuf], inf);
+~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
+~instrumentPPatt.source = Pseq([\simplePlayBuf], inf);
+
 
 //=========
 ratios
@@ -59,15 +67,17 @@ ratios
 3: Mantialtos v.2
 4: Mantialtos v.3
 
+~dum = ~gonga
 Rythm.play
-Rythm.trionXronon //Dontiapikna
-Rythm.mantilatos(1,160)
-Rythm.tsifteteli(5,60)
+Rythm.trionXronon(18) //Dontiapikna
+Rythm.xasapiko(0,100) //Katerina, Toumpourlika
+Rythm.mantilatos(3,100)
+Rythm.tsifteteli(1,90)
+Rythm.tsifteteli(5,90)
+
 
 Rythm.stop
 */
-
-
 
 Rythm {
 	*initClass {
@@ -84,6 +94,7 @@ Rythm {
 				"\n|====================|".postln;
 				"|Rythm Class is ready|".postln;
 				"|====================|\n".postln;
+				~rythm.play;
 			};
 
 		}
@@ -94,34 +105,70 @@ Rythm {
 
 	*loadTheBuffers	{
 
-		~dum = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/bass_Drum_Single_Kick.aiff");
-		~te = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/gonga_single_hit.aiff");
+		~bass_drum = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/bass_Drum_Single_Kick.aiff");
+		~gonga = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/gonga_single_hit.aiff");
 		~bell = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/agogo_bell.aiff");
 		~tambourine = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/tambourine.aiff");
 		~motoLoop = Buffer.read(Server.default, "/Users/ari/Media/sounds/loops/MotownDrummer08.aif");
+
+		//default
+		~dum = ~bass_drum;
+		~te  = ~gonga;
 	}
 	*sendTheSynths	{
+		//Simple
 		SynthDef(\simplePlayBuf, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, loop = 0 |
 			Out.ar(0, Pan2.ar(PlayBuf.ar(1,bufnum:bufnum,doneAction:
 				2, loop: loop), 0, amp));
 		}).store;
 
+		//\phasorPlayBuf
+		SynthDef(\phasorPlayBuf, { | out, freq = 440, amp = 2, bufnum = 10, pan = 0, gate = 1, loop = 0, rate = 1|
+			var playBuf, phasor;
+			playBuf = PlayBuf.ar(1,bufnum:bufnum,doneAction:2);
+			phasor = Phasor.ar(0, BufRateScale.kr(bufnum)*rate);
+			Out.ar(0, Pan2.ar(phasor, loop: loop), 0, amp);
+		}).store;
+
+		//doesn't work
 		SynthDef(\playBufGVerb, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
+			var playBuffer = PlayBuf.ar(1,bufnum:bufnum, doneAction:2);
 			Out.ar(0,
 				Pan2.ar(
 					GVerb.ar(
-						PlayBuf.ar(1,bufnum:bufnum, doneAction:2),
+						playBuffer,
 						roomsize,
 						revtime,
 						damping,
 						mul: mulVerb
 					)
 					+
-					PlayBuf.ar(1,bufnum:bufnum, doneAction:2),
+					playBuffer,
 					0, amp)
 			);
-		}).send(Server.default);
+		}).store;
 
+		//doesn't work
+		SynthDef(\playBufGVerbPhasor, { | out, freq = 440, amp = 0.1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
+			var playBuffer;
+			playBuffer = PlayBuf.ar(1,bufnum:bufnum, doneAction:2);
+			Out.ar(0,
+				Pan2.ar(
+					GVerb.ar(
+						playBuffer,
+						roomsize,
+						revtime,
+						damping,
+						mul: mulVerb
+					)
+					+
+					playBuffer,
+					0, amp)
+			);
+		}).store;
+
+
+		//mic input
 		SynthDef(\gverb_mic, {
 			|roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel, pos = 0, amp = 1,
 			taillevel|
@@ -149,7 +196,7 @@ Rythm {
 		~durPPatt = PatternProxy(Pseq([1, 1], inf));
 
 		~rythm = Pbind(
-			\instrument,     \simplePlayBuf,
+			\instrument,     ~instrumentPPatt,
 			\bufnum,         ~bufnumPPatt,
 			\amp,            ~ampPPatt,
 			\dur,            ~durPPatt,
@@ -188,7 +235,7 @@ Rythm {
 		}
 		{version == 3} {
 			~bufnumPPatt.source = Pseq([~dum, 0,~te, 0, ~te, 0, 0], inf);
-			~ampPPatt.source = Pseq([1, 0, 1, 0, 1, 0, 0], inf);
+			~ampPPatt.source =    Pseq([   1, 0,  1, 0,   1, 0, 0], inf);
 		};
 	}
 	*tsifteteli { |version, bpm|
