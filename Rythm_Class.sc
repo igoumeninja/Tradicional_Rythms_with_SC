@@ -54,16 +54,17 @@ ratios
 4: 9/8
 
 //====================
-Rythm.start
 1: Xasapiko
-2: Mantialtos
+2: Mantialtos v.1
+3: Mantialtos v.2
+4: Mantialtos v.3
 
-Rythm.defineRythm()
-Rythm.kind(2)
 Rythm.play
-Rythm.define(2,220)
+Rythm.trionXronon //Dontiapikna
+Rythm.mantilatos(1,120)
+Rythm.tsifteteli(1, 60)
+
 Rythm.stop
-		~rythm.play;
 */
 
 
@@ -74,7 +75,7 @@ Rythm {
 			if (not(Server.default.serverRunning)) { Server.default.boot };
 			Server.default.doWhenBooted {
 				//ratio= [2/4,     4/4,    8/8,    3/4,   7/8,   9/8]
-				~ratio = [0.1/6, 0.1/6,  1/30, 0.4/18, 0.1/3, 0.1/3];
+				~ratio = [0.1/6, 0.1/3,  1/30, 0.4/18, 0.1/3, 0.1/3];
 				~bpm = 60;
 				this.loadTheBuffers;
 				this.sendTheSynths;
@@ -87,25 +88,6 @@ Rythm {
 		}
 	}
 
-	*define { |rythm, bpm |
-		rythm = case
-		{ rythm == 1 }   {
-			~bpm = ~ratio[0]*bpm;
-			~durPPatt.source = Pseq([1, 1], inf)/~bpm;
-			this.xasapiko;
-			~myRythmIs = 1
-		}
-		{ rythm == 2 }   {
-			~bpm = ~ratio[4]*bpm;
-			~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
-			this.mantilatos;
-			~myRythmIs = 2
-		}
-		{ rythm == 3 }   { ~bpm = ~ratio[5]*bpm; this.karsilamas;  ~myRythmIs = 3}
-		{ rythm == 0 }   { ~bpm = 0 };
-
-
-	}
 	*play {~rythm.play;}
 	*stop {~rythm.stop;}//Doesn't work
 
@@ -175,10 +157,54 @@ Rythm {
 	}
 
 	//Rythms
-	*xasapiko {
+	*xasapiko { |version,bpm|
+		~bpm = ~ratio[0]*bpm;
+		~durPPatt.source = Pseq([1, 1], inf)/~bpm;
 		~bufnumPPatt.source = Pseq([~dum, ~te], inf);
 		~ampPPatt.source = Pseq([1, 1], inf);
 	}
+	*trionXronon { |bpm = 100|
+		~bpm = ~ratio[3]*bpm;
+		~durPPatt.source = Pseq([1, 1, 1], inf)/~bpm;
+		~bufnumPPatt.source = Pseq([~dum, ~te, ~te], inf);
+		~ampPPatt.source = Pseq([1, 1, 1], inf);
+	}
+	*karsilamas {|version,bpm|
+		~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~te], inf);
+		~ampPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
+		~durPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
+	}
+	*mantilatos { |version, bpm|
+		~bpm = ~ratio[4]*bpm;
+		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
+		case
+		{version == 1} {
+			~bufnumPPatt.source = Pseq([~dum, 0,~te, ~te, ~te, ~te, ~te], inf);
+			~ampPPatt.source = Pseq([1, 0, 1, 1, 1, 1, 1], inf);
+		}
+		{version == 2} {
+			~bufnumPPatt.source = Pseq([~dum, 0,~te, 0, ~dum, 0, ~te], inf);
+			~ampPPatt.source = Pseq([1, 0, 1, 0, 1, 0, 1], inf);
+		}
+		{version == 3} {
+			~bufnumPPatt.source = Pseq([~dum, 0,~te, 0, ~te, 0, 0], inf);
+			~ampPPatt.source = Pseq([1, 0, 1, 0, 1, 0, 0], inf);
+		};
+	}
+	*tsifteteli { |version, bpm = 100|
+		~bpm = ~ratio[1]*bpm;
+		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
+		case
+		{version == 1} {
+			~bufnumPPatt.source = Pseq([~dum, ~te, 0, ~te, ~dum, 0, ~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    1,   0, 1,   1,    0, 1,   0], inf);
+		};
+	}
+}
+
+
+////////////////
+/*
 	*xasapiko2 {
 		~bufnumPPatt.source = Pseq([
 			~dum,   0,
@@ -199,13 +225,4 @@ Rythm {
 			1,1
 		]/~bps, inf);
 	}
-	*karsilamas {
-		~bufnumPPatt.source = Pseq([~dum, ~te,~dum, ~te,~dum, ~te,~dum, ~te,~te], inf);
-		~ampPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
-		~durPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
-	}
-	*mantilatos {
-		~bufnumPPatt.source = Pseq([~dum, 0,~te, 0, ~te,0, 0], inf);
-		~ampPPatt.source = Pseq([1, 0, 1, 0, 1, 0, 0], inf);
-	}
-}
+*/
