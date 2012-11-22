@@ -5,13 +5,8 @@ Aris Bezas 121115
 
 //====================
 Rythms
-Rythm.play
-Rythm.trionXronon(35) //Dontiapikna
-Rythm.xasapiko(100) //Katerina, Toumpourlika
-Rythm.mantilatos(3,100)
-Rythm.tsifteteli(1,90)
-Rythm.tsifteteli(5,90)
-Rythm.sousta(1,90)
+Rythm.play(8.1,110,0)
+Rythm.play(5,110,0)
 
 SCDoc
 
@@ -63,11 +58,11 @@ Rythm.stop
 ============
 SCDoc
 
-Rythm
+Rythm.play
 */
 
 
-Rythm_99 {
+Rythm {
 	*initClass {
 		StartUp add: {
 			if (not(Server.default.serverRunning)) { Server.default.boot };
@@ -87,7 +82,20 @@ Rythm_99 {
 		}
 	}
 
-	*play {~rythm.play;}
+	*play {|version=1, bpm=100, init=0|
+		if (init == 0,
+			{
+				"Rythm is Playing, so just change the change the rythm".postln;
+				this.changeRythm(version, bpm);
+			},
+			{
+				"Rythm is not Playing, so first let's start the Pattern and after define the rythm".postln;
+				this.start;
+				this.changeRythm(version, bpm);
+		}
+		)
+	}
+	*start{~rythm.play;}
 	*stop {~rythm.stop;}//Doesn't work
 
 	*loadTheBuffers	{
@@ -305,5 +313,70 @@ Rythm_99 {
 		{version == 2} {
 			"not yet".postln;
 		};
+	}
+	*changeRythm { |rythmNum=1, bpm=100|
+		case
+		{rythmNum ==1} {
+			~bpm = ~ratio[0]*bpm;
+			~durPPatt.source = Pseq([1, 1, 1, 1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, ~te,  ~dum, ~te], inf);
+			~ampPPatt.source =    Pseq([   1,   1,     1,   1], inf);
+		}
+		{rythmNum ==2} {
+			~bpm = ~ratio[5]*bpm;
+			~durPPatt.source = Pseq([1, 1, 1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, ~te,  ~te], inf);
+			~ampPPatt.source =    Pseq([   1,   1,    1], inf);
+		}
+		{rythmNum ==3} {
+			~bpm = ~ratio[2]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te,  ~te, ~dum,  0,  ~te,  0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,    1,    1,  0,   1,   0], inf);
+		}
+		{rythmNum ==4} {
+			~bpm = ~ratio[2]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te,  ~te, ~dum,  ~te,  ~te,  0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,    1,    1,    1,   1,   0], inf);
+		}
+		{rythmNum ==5} {
+			~bpm = ~ratio[3]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te,  ~te, ~dum,   0,  ~te,  0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,    1,    1,   0,   1,   0], inf);
+		}
+		{rythmNum ==6} {
+			~bpm = ~ratio[3]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te,  ~te, ~dum,   0,  ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,    1,    1,   0,   1,    1], inf);
+		}
+		{rythmNum ==7} {
+			~bpm = ~ratio[0]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te,  ~te, ~te,   0,  ~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,    1,   1,   0,   1,  0], inf);
+		}
+		{rythmNum ==8.1} {
+			~bpm = ~ratio[2]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, 0,  ~te, ~te,   0,  ~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    0, 0,    1,   1,   0,   1,  0], inf);
+		}
+		{rythmNum ==8.2} {
+			~bpm = ~ratio[2]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, 0,  ~te, ~te,  ~te,  ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0, 0,    1,   1,    1,   1,    1], inf);
+		}
+		{rythmNum ==9.1} {
+			~bpm = ~ratio[2]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, 0,  ~te, ~te,   0,  ~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    0, 0,    1,   1,   0,   1,  0], inf);
+		}
+
+
 	}
 }
