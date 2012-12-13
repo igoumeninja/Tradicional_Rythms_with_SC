@@ -1,7 +1,7 @@
-*Rythm is a tool to play tradicional rythms with SuperCollider*
+Rythm is a tool to play tradicional rythms with SuperCollider
+
 //============================================================//
 
-#+begin_example
 1    : Ρυθμός 2 χρόνων
 2    : Ρυθμός 3 χρόνων
 		- Ντελί Παππάς
@@ -36,13 +36,15 @@
 13   : Μπεράτι Ηπείρου
 14   : Μπεράτι Ηπείρου - TODO
 
-47	 : Απτάλικο Ζεϊμπέκικο (9/4)
+47   : Απτάλικο Ζεϊμπέκικο (9/4)
 		- Της τριανταφυλλιάς τα φύλλα
 		- Ολμάζ
 		- Αηδίνικο
 		- Στο Φάληρο που πλένεσαι
 
+==========
 *EXAMPLES*
+==========
 
 Rythm.play(2,110,1);  //Initialize
 Rythm.play(2,110,0);  //Dontia Pykna
@@ -60,6 +62,7 @@ Rythm.tsifteteli(1,90)
 Rythm.tsifteteli(5,90)
 
 Rythm.sousta(1,90)
-#+end_example
 
+
+=================
 Aris Bezas 121115
