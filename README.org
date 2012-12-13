@@ -1,130 +1,67 @@
-TITLE:: Rythm
-summary:: play tradicional rythms with SuperCollider
-categories:: AB Class
-related:: not yet
+*Rythm is a tool to play tradicional rythms with SuperCollider*
 
-DESCRIPTION::
-Rythm is a tool to play tradicional rythms with SuperCollider
+#+begin_example
+1    : Ρυθμός 2 χρόνων
+2    : Ρυθμός 3 χρόνων
+        - Ντελί Παππάς
+        - Δόντια Πυκνά
+        - Κοντούλα Λεμονιά
+3    : Ρυθμός 4 χρόνων
+         - Χορός στα δύο ή Πωγωνίσιο
+4    : Ρυθμός 4 χρόνων
+5    : Ρυθμός 4 χρόνων
+6    : Ρυθμός 4 χρόνων
+7    : Σούστα (Γρηγορόμπαλλος, Πεντοζάλης, Ρεπαντί, Κουρσάρικος)
+        - Πάντα με κάνεις να πονώ
+         - Χορέψετε, χορέψετε
+8.1  : Μπάλος
+8.2  : Μπάλος
+9.1  : Τσάμικο
+9.2  : Τσάμικο
+10.1 : Τσάμικο Ηπείρου
+10.2 : Τσάμικο Ηπείρου
+        - Ανάθεμα ποιός έριξε τα μάγια στο πηγάδι
+        - Την πέρδικα που πιάσατε ...
+11.1 : Τσάμικο Ηπείρου
+11.2 : Τσάμικο Ηπείρου
+        - Κλέφτες
+        - Ξύπνα περιδκομάτα μου  (αργόσυρτα με ιδιότροπο χαρακτήρα)
+12.1 : Ζαγορίσιος
+12.2 : Ζαγορίσιος
+12.3 : Ζαγορίσιος
+        - Βασιλαρχόντισσα
+        - Παπαδιά
+        - Σου πα μανά παντρεψέ με (Τσακώνικος)
+13   : Μπεράτι Ηπείρου
+14   : Μπεράτι Ηπείρου - TODO
 
-CLASSMETHODS::
-
-METHOD:: initClass
- Load the Buffers, store the Synhts, and define ProxyPattern
-
-METHOD:: play
-code::
-Rythm.play;
-::
-
-METHOD:: stop
-
-METHOD:: sendTheSynths
-code::
-~instrumentPPatt.source = Pseq([\phasorPlayBuf], inf);
-~instrumentPPatt.source = Pseq([\playBufGVerb], inf);
-~instrumentPPatt.source = Pseq([\simplePlayBuf], inf);
-::
-
-For Mic Input
-code::
-//living room
-a = Synth(\gverb_mic, [\roomsize, 16, \revtime, 1.24, \damping, 0.10, \inputbw, 0.95, \drylevel -3, \earlylevel, -15, \taillevel, -17]);
-a.free;
-
-//church
-a = Synth(\gverb_mic, [\roomsize, 80, \revtime, 4.85, \damping, 0.41, \inputbw, 0.19, \drylevel -3, \earlylevel, -9, \taillevel, -11]);
-a.free;
-
-// cathedral
-a = Synth(\gverb_mic, [\roomsize, 243, \revtime, 1, \damping, 0.1, \inputbw, 0.34, \drylevel -3, \earlylevel, -11, \taillevel, -9]);
-4a.free
-
-// canyon
-a = Synth(\gverb_mic, [\roomsize, 300, \revtime, 103, \damping, 0.43, \inputbw, 0.51, \drylevel -5, \earlylevel, -26, \taillevel, -20]);
-::
-
-METHOD:: defineProxyPattern
-code::
-~instrumentPPatt = PatternProxy(Pseq([\simplePlayBuf], inf));
-~ratePPatt = PatternProxy(Pseq([1], inf));
-~bufnumPPatt = PatternProxy(Pseq([~dum, ~te], inf));
-~ampPPatt = PatternProxy(Pseq([0, 0], inf));
-~durPPatt = PatternProxy(Pseq([1, 1], inf));
-
-~rythm = Pbind(
-	\instrument,     ~instrumentPPatt,
-	\rate,           ~ratePPatt,
-	\bufnum,         ~bufnumPPatt,
-	\amp,            ~ampPPatt,
-	\dur,            ~durPPatt,
-);
-::
-
-METHOD:: xasapiko
-code::
-~bufnumPPatt.source = Pseq([~dum, ~te], inf);
-~ampPPatt.source = Pseq([1, 1], inf);
-::
-
-ARGUMENT:: bpm
-Define bpm
-
-METHOD:: trionXronon
-code::
-~bufnumPPatt.source = Pseq([~dum, ~te, ~te], inf);
-~ampPPatt.source = Pseq([1, 1, 1], inf);
-::
+47     : Απτάλικο Ζεϊμπέκικο (9/4)
+        - Της τριανταφυλλιάς τα φύλλα
+        - Ολμάζ
+        - Αηδίνικο
+        - Στο Φάληρο που πλένεσαι
 
 
-ARGUMENT:: bpm
-Define bpm
+/*
+Rythm
+OOP with tradicional rythms
+Aris Bezas 121115
 
-METHOD:: karsilamas
-(describe method here)
+//====================
+Rythm.play(2,110,1);  //Initialize
+Rythm.play(2,110,0);  //Dontia Pykna
 
-ARGUMENT:: version
-(describe argument here)
+Rythm.play(10.2,120);
+Rythm.play(2,100);  //just change
 
-ARGUMENT:: bpm
-(describe argument here)
+Rythm.trionXronon(18); //Dontia Pykna
+Rythm.xasapiko(100); //Katerina, Toumpourlika
+Rythm.mantilatos(3,95);
 
-returns:: (describe returnvalue here)
+Rythm.play(47,110,1);  //Aptaliko
 
-METHOD:: loadTheBuffers
-(describe method here)
+Rythm.tsifteteli(1,90)
+Rythm.tsifteteli(5,90)
 
-returns:: (describe returnvalue here)
-
-METHOD:: mantilatos
-(describe method here)
-
-ARGUMENT:: version
-(describe argument here)
-
-ARGUMENT:: bpm
-(describe argument here)
-
-returns:: (describe returnvalue here)
-
-METHOD:: tsifteteli
-(describe method here)
-
-ARGUMENT:: version
-(describe argument here)
-
-ARGUMENT:: bpm
-(describe argument here)
-
-returns:: (describe returnvalue here)
-
-
-INSTANCEMETHODS::
-
-
-EXAMPLES::
-
-code::
-Rythm.trionXronon(18) //Dontia Pykna
-Rythm.xasapiko(0,100) //Katerina, Toumpourlika
-Rythm.mantilatos(1,120)
-::
+Rythm.sousta(1,90)
+#+end_example
