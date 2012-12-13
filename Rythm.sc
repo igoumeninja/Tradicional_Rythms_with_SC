@@ -4,12 +4,22 @@ OOP with tradicional rythms
 Aris Bezas 121115
 
 //====================
-Rythms
-Rythm.play(8.1,110,0)
-Rythm.play(5,110,0)
+Rythm.play(2,110,1);  //Initialize
+Rythm.play(2,110,0);  //Dontia Pykna
 
-SCDoc
+Rythm.play(10.2,120);
+Rythm.play(2,100);  //just change
 
+Rythm.trionXronon(18); //Dontia Pykna
+Rythm.xasapiko(100); //Katerina, Toumpourlika
+Rythm.mantilatos(3,95);
+
+Rythm.play(47,110,1);  //Aptaliko
+
+Rythm.tsifteteli(1,90)
+Rythm.tsifteteli(5,90)
+
+Rythm.sousta(1,90)
 =================
 Looper
 x = Synth(\simplePlayBuf,[\bufnum, ~motoLoop, \loop, 1]);
@@ -67,16 +77,16 @@ Rythm {
 		StartUp add: {
 			if (not(Server.default.serverRunning)) { Server.default.boot };
 			Server.default.doWhenBooted {
-				//ratio= [   0,    1,    2,     3,     4,       5,    6,     7]
-				//ratio= [ 2/4,  4/4,  8/8, 16/16,  33/32,    3/4,  7/8,   9/8]
-				~ratio = [1/60, 1/60, 1/30,  1/15,   2/15, 0.4/18, 1/15, 0.1/3];
+				//ratio= [   0,    1,    2,     3,     4,       5,     6,      7,     8,     9,     10,    11 ]
+				//ratio= [ 2/4,  4/4,  8/8, 16/16,  33/32,    3/4,   6/8,    7/8,   9/8,   10/8   12/8,   18/8(9/4)]
+				~ratio = [1/60, 1/60, 1/30,  1/15,   2/15, 0.4/18,  1/30,   1/15, 0.1/3,   1/30,   1/30, 1/60];
 				~bpm = 60;
 				this.loadTheBuffers;
 				this.sendTheSynths;
 				this.defineProxyPattern;
-				"\n|====================|".postln;
-				"|Rythm Class is ready|".postln;
-				"|====================|\n".postln;
+				"\n|======================|".postln;
+				"|Rythm Class is running|".postln;
+				"|======================|\n".postln;
 			};
 
 		}
@@ -163,7 +173,6 @@ Rythm {
 			);
 		}).store;
 
-
 		//mic input
 		SynthDef(\gverb_mic, {
 			|roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel, pos = 0, amp = 1,
@@ -220,7 +229,7 @@ Rythm {
 		~durPPatt.source = Pseq([1, 1,1, 1,1, 1,1, 1, 1], inf);
 	}
 	*mantilatos { |version, bpm=100|
-		~bpm = ~ratio[6]*bpm;
+		~bpm = ~ratio[7]*bpm;
 		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
 		case
 		{version == 1} {
@@ -290,7 +299,7 @@ Rythm {
 		};
 	}
 	*syrto7 { |version, bpm=100|
-		~bpm = ~ratio[6]*bpm;
+		~bpm = ~ratio[7]*bpm;
 		~durPPatt.source = Pseq([1, 1, 1, 1, 1, 1, 1], inf)/~bpm;
 		case
 		{version == 1} {
@@ -371,12 +380,72 @@ Rythm {
 			~ampPPatt.source =    Pseq([1,    0, 0,    1,   1,    1,   1,    1], inf);
 		}
 		{rythmNum ==9.1} {
-			~bpm = ~ratio[2]*bpm;
-			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1], inf)/~bpm;
-			~bufnumPPatt.source = Pseq([~dum, 0, 0,  ~te, ~te,   0,  ~te, 0], inf);
-			~ampPPatt.source =    Pseq([1,    0, 0,    1,   1,   0,   1,  0], inf);
+			~bpm = ~ratio[5]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, 0,  ~te, ~te,   0,  ~te, 0,~te, 0,~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    0, 0,    1,   1,   0,   1,  0,  1, 0,  1, 0], inf);
+		}
+		{rythmNum ==9.2} {
+			~bpm = ~ratio[5]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, 0,~te, ~te,   0,  ~te, 0,~te, ~te,~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0, 0,  1,   1,   0,   1,  0,  1,   1,  1,   1], inf);
+		}
+		{rythmNum ==10.1} {
+			~bpm = ~ratio[6]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~dum, ~te,   0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,   1,    0], inf);
+		}
+		{rythmNum ==10.2} {
+			~bpm = ~ratio[6]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~dum, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,   1,    1], inf);
+		}
+		{rythmNum ==11.1} {
+			~bpm = ~ratio[9]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~dum, ~te, 0, ~dum, ~dum, ~te, 0, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,   1,  0,    1,    1,   1,  0,  1,   1], inf);
+		}
+		{rythmNum ==11.2} {
+			~bpm = ~ratio[9]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~dum, ~te, 0, ~dum, ~dum, ~te, 0, 0,0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,   1,  0,    1,    1,   1, 0, 0,0], inf);
+		}
+		{rythmNum ==12.1} {
+			~bpm = ~ratio[9]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~te, ~dum,  0, ~te,  0, 0,0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,    1,  0,   1,  0, 0,0], inf);
+		}
+		{rythmNum ==12.2} {
+			~bpm = ~ratio[9]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~te, ~dum,  ~dum, ~te,  0, ~te,  ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,    1,     1,   1,  0,   1,    1], inf);
+		}
+		{rythmNum ==12.3} {
+			~bpm = ~ratio[9]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~te, ~dum,  0, ~te,  0, ~te,  ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,    1,  0,   1,  0,   1,    1], inf);
+		}
+		{rythmNum ==13} {
+			~bpm = ~ratio[9]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~te, ~dum,  0, ~te,  0, 0, 0,~dum, 0, ~te, ~dum, ~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,    1,  0,   1,  0, 0, 0,   1, 0,  1,    1,   1, 0], inf);
 		}
 
+		{rythmNum ==47} {
+			~bpm = ~ratio[11]*bpm;
+			~durPPatt.source = Pseq([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, 0, ~te, 0,~dum,  0, ~te,  ~te, ~dum, 0, ~te, 0, ~dum, 0, ~te, ~te], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1, 0,   1, 0,   1,  0,   1,    1,    1, 0,   1, 0,    1, 0,   1,   1], inf);
+		}
 
 	}
 }
