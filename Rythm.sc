@@ -102,7 +102,7 @@ Rythm {
 				"Rythm is not Playing, so first let's start the Pattern and after define the rythm".postln;
 				this.start;
 				this.changeRythm(version, bpm);
-		}
+			}
 		)
 	}
 	*start{~rythm.play;}
@@ -127,8 +127,28 @@ Rythm {
 				2, loop: loop), 0, amp));
 		}).store;
 
+		//mic input
+		SynthDef(\gverb_mic, {
+			|roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel, pos = 0, amp = 1,
+			taillevel|
+			Out.ar(0, Pan2.ar(GVerb.ar(
+				SoundIn.ar(0),
+				roomsize,
+				revtime,
+				damping,
+				inputbw,
+				spread,
+				drylevel.dbamp,
+				earlylevel.dbamp,
+				taillevel.dbamp,
+				roomsize, 0.3) + SoundIn.ar(0)),
+				pos,
+				amp)
+		}).store;
+
 		//\phasorPlayBuf
-		SynthDef(\phasorPlayBuf, { | out, freq = 440, amp = 2, bufnum = 10, pan = 0, gate = 1, loop = 0, rate = 1|
+		SynthDef(\phasorPlayBuf, { | out, freq = 440, amp = 2, bufnum = 10, pan = 0, gate = 1,
+			loop = 0, rate = 1|
 			var playBuf, phasor;
 			//phasor = Phasor.ar(0, BufRateScale.kr(bufnum)*rate, 0, BufFrames.kr(bufnum));
 			//playBuf = BufRd.ar(1, bufnum, phase:phasor,loop:0,interpolation:1);
@@ -137,7 +157,8 @@ Rythm {
 		}).store;
 
 		//doesn't work
-		SynthDef(\playBufGVerb, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
+		SynthDef(\playBufGVerb, { | out, freq = 440, amp = 1, bufnum = 10, pan = 0, gate = 1,
+			roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
 			var playBuffer = PlayBuf.ar(1,bufnum:bufnum, doneAction:2);
 			Out.ar(0,
 				Pan2.ar(
@@ -155,7 +176,8 @@ Rythm {
 		}).store;
 
 		//doesn't work
-		SynthDef(\playBufGVerbPhasor, { | out, freq = 440, amp = 0.1, bufnum = 10, pan = 0, gate = 1, roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
+		SynthDef(\playBufGVerbPhasor, { | out, freq = 440, amp = 0.1, bufnum = 10, pan = 0, gate = 1,
+			roomsize = 5, revtime = 1.6, damping = 0.62, mulVerb = 1 |
 			var playBuffer;
 			playBuffer = PlayBuf.ar(1,bufnum:bufnum, doneAction:2);
 			Out.ar(0,
@@ -171,26 +193,6 @@ Rythm {
 					playBuffer,
 					0, amp)
 			);
-		}).store;
-
-		//mic input
-		SynthDef(\gverb_mic, {
-			|roomsize, revtime, damping, inputbw, spread = 15, drylevel, earlylevel, pos = 0, amp = 1,
-			taillevel|
-			Out.ar(0, Pan2.ar(GVerb.ar(
-				SoundIn.ar(0),
-                roomsize,
-                revtime,
-                damping,
-                inputbw,
-                spread,
-                drylevel.dbamp,
-                earlylevel.dbamp,
-                taillevel.dbamp,
-				roomsize, 0.3) + SoundIn.ar(0)),
-				pos,
-				amp)
-
 		}).store;
 	}
 
