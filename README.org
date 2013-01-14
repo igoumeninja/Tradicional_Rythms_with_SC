@@ -1,4 +1,16 @@
 The main README file is the README.txt and you can open it from above.
 
+Σχετικά με το Repository και την εγκατάσταση:
+- Κατεβάστε το SuperCollider (http://supercollider.sourceforge.net/)
+- Τοποθετήστε το .zip αρχείο στα Extension του SuperCollider.
+- Τοποθετήστε το αρχείο Rythm.schelp στη θέση /Applications/SuperCollider/SuperCollider.app/Contents/Resources/HelpSource/Classes (για χρηστες Mac OSX).
+
+Σχετικά με την συνεργασία στην ανάπτυξη του Repository:
+- Κάντε fork το repo στον προσωπικό σας λογαριαμό στο Git
+- Κάντε τις αλλαγές (αλλάξτε και το .schelp αρχείο έτσι ώστε να κρατάτε ενήμερο το help)
+- Κάντε pull request στο repo.
+
+Εννοείται οτι το project είναι ανοιχτό σε κάθε βοήθεια, συνεισφορά, σχόλιο, κριτική, κράξιμο και οτι γουστάρει ο καθείς.
+
 Aris Bezas
-<2012-12-13 Thu>
+<2013-01-14 Mon 16:39>
