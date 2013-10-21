@@ -9,6 +9,7 @@ Rhythm.play(rhythmID, bpm, intitialize);
 Rhythm.play(2,100,1);  // Initialize and play a Rhythm
 Rhythm.play(2,100);    // just change rhytm and bpm
 
+
 Examples:
 ---------
 Rhythm.play(45,100,1); // Γεωργίτσα
@@ -187,4 +188,7 @@ code::
 Rhythm.play(2,100,1);  // Initialize and play a Rhythm
 Rhythm.play(2,100);    // just change rhytm and bpm
 ~instrumentPPatt.source = Pseq([\simplePlayBuf], inf);
+
+
+... and don't forget, we love SuperCollider
 ::
