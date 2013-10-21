@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Tο αρχείο Rythm.schelp είναι το αρχείο βοήθειας του προτύπου.
 
 Τα .aiff αρχεία που χρησιμοποιούνται σαν Buffers μπορείται να τα κατεβάσεται απο την διεύθηνση http://igoumeninja.org/media/sounds/percusion/.
@@ -5,6 +6,13 @@ Tο αρχείο Rythm.schelp είναι το αρχείο βοήθειας το
 Σχετικά με το Repository και την εγκατάσταση:
 - Κατεβάστε το SuperCollider (http://supercollider.sourceforge.net/)
 - Τοποθετήστε το .zip αρχείο στα Extensions του SuperCollider.
+=======
+The main README file is the README.txt and you can open it from above.
+
+Σχετικά με το Repository και την εγκατάσταση:
+- Κατεβάστε το SuperCollider (http://supercollider.sourceforge.net/)
+- Τοποθετήστε το .zip αρχείο στα Extension του SuperCollider.
+>>>>>>> refs/remotes/origin/master
 - Τοποθετήστε το αρχείο Rythm.schelp στη θέση /Applications/SuperCollider/SuperCollider.app/Contents/Resources/HelpSource/Classes (για χρηστες Mac OSX).
 
 Σχετικά με την συνεργασία στην ανάπτυξη του Repository:
@@ -14,11 +22,14 @@ Tο αρχείο Rythm.schelp είναι το αρχείο βοήθειας το
 
 Εννοείται οτι το project είναι ανοιχτό σε κάθε βοήθεια, συνεισφορά, σχόλιο, κριτική, κράξιμο και οτι γουστάρει ο καθείς.
 
+<<<<<<< HEAD
 *TODO*
 1. Προσαρμογή του Rythm.sc στα πρότυπα του SendTags.sc
 2. Κατα την αλλαγή ρυθμού, να περιμένει μέχρι να ολοκληρωθεί ο κύκλος και μετά να αλλάζει.
 3. Επιπλέον παράμετρο για ορισμό πόσα μέτρα επιθυμεί ο χρήστης να εκτελεστεί ο ρυθμός.
 4. Σωστή εφαρμογή στην αλλαγή των bpm
 
+=======
+>>>>>>> refs/remotes/origin/master
 Aris Bezas
 <2013-01-14 Mon 16:39>
