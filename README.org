@@ -1,6 +1,6 @@
 Tο αρχείο Rythm.schelp είναι το αρχείο βοήθειας του προτύπου.
 
-Τα .aiff αρχεία που χρησιμοποιούνται σαν Buffers μπορείται να τα κατεβάσεται απο την διεύθηνση http://igoumeninja.org/media/sounds/percusion/.
+Τα .aiff αρχεία που χρησιμοποιούνται σαν Buffers μπορείται να τα κατεβάσεται απο την διεύθηνση https://googledrive.com/host/0B0u4f2Om_ugSUkxFU09OVjdwMkE/uploads/The_Rhythms/percussion-samples/.
 
 Σχετικά με το Repository και την εγκατάσταση:
 - Κατεβάστε το SuperCollider (http://supercollider.sourceforge.net/)
