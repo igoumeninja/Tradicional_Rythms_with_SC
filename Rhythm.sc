@@ -3,8 +3,8 @@ metropolis movie
 Rhythm
 OOP with tradicional rhythms
 Aris Bezas 121115
-
-Rhythm.play(101,50);  //Rhythm.play(rhythmID, bpm);
+~dum = ~hand_drum;
+~te = Rhythm.play(0,40);  //Rhythm.play(rhythmID, bpm);
 ~instrumentPPatt.source = Pseq(\simplePlayBuf, inf);
 */
 
@@ -54,12 +54,12 @@ Rhythm {
 
 	*loadTheBuffers	{
 
-		~bass_drum = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/bass_Drum_Single_Kick.aiff");
-		~gonga = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/gonga_single_hit.aiff");
-		~bell = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/agogo_bell.aiff");
-		~tambourine = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/tambourine.aiff");
-		~motoLoop = Buffer.read(Server.default, "/Users/ari/Media/sounds/loops/MotownDrummer08.aif");
-		~bass_tambourine = Buffer.read(Server.default, "/Users/ari/Media/sounds/percusion/bass_tambourine.aiff");
+		~hand_drum = Buffer.read(Server.default, "/Users/ari/Google\ Drive/web_sharing/uploads/The_Rhythms/percussion-samples/hand_drum.aiff");
+		~bass_drum = Buffer.read(Server.default, "/Users/ari/Google\ Drive/web_sharing/uploads/The_Rhythms/percussion-samples/bass_Drum_Single_Kick.aiff");
+		~gonga = Buffer.read(Server.default, "/Users/ari/Google\ Drive/web_sharing/uploads/The_Rhythms/percussion-samples/gonga_single_hit.aiff");
+		~bell = Buffer.read(Server.default, "/Users/ari/Google\ Drive/web_sharing/uploads/The_Rhythms/percussion-samples/agogo_bell.aiff");
+		~tambourine = Buffer.read(Server.default, "/Users/ari/Google\ Drive/web_sharing/uploads/The_Rhythms/percussion-samples/tambourine.aiff");
+		~bass_tambourine = Buffer.read(Server.default, "/Users/ari/Google\ Drive/web_sharing/uploads/The_Rhythms/percussion-samples/bass_tambourine.aiff");
 
 
 		//default
@@ -159,6 +159,13 @@ Rhythm {
 	//Rhythms
 	*changeRhythm { |rhythmNum=1, bpm=100|
 		case
+		{rhythmNum == 0} {  // Metronome
+			~bpm = ~ratio[0]*bpm;
+			~durPPatt.source = Pseq([1], inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum], inf);
+			~ampPPatt.source =    Pseq([   1], inf);
+			// ~countPPatt.source =    Pseq([   1], inf);
+		}
 		{rhythmNum == 1} {
 			~bpm = ~ratio[0]*bpm;
 			~durPPatt.source = Pseq([1, 1, 1, 1], inf)/~bpm;
