@@ -4,7 +4,8 @@ Rhythm
 OOP with tradicional rhythms
 Aris Bezas 121115
 ~dum = ~hand_drum;
-~te = Rhythm.play(0,40);  //Rhythm.play(rhythmID, bpm);
+~te =
+Rhythm.play(83,100);  //Rhythm.play(rhythmID, bpm);
 ~instrumentPPatt.source = Pseq(\simplePlayBuf, inf);
 */
 
@@ -544,6 +545,15 @@ Rhythm {
 			~bufnumPPatt.source = Pseq([~dum, 0, ~dum, 0, ~te, ~te, ~te, 0, ~dum,   0, ~te, ~te,   ~te, 0, ~te, ~te], inf);
 			~ampPPatt.source =    Pseq([1,    0,   1,  0,   1,   1,   1, 0,    1,   0,   1,   1,     1, 0,   1,   1], inf);
 		}
+		// TODO
+		// DONE
+		{rhythmNum == 83} { // pousnitsa
+			~bpm = ~ratio[12]*bpm;
+			~durPPatt.source = Pseq(Array.fill(15,1);, inf)/~bpm;
+			~bufnumPPatt.source = Pseq([~dum, 0, ~te, ~te, ~dum, 0, ~te, ~te, ~dum,   0, ~te, ~te, 0, ~te, 0], inf);
+			~ampPPatt.source =    Pseq([1,    0,   1,   1,    1, 0,   1,   1,    1,   0,   1,   1, 0,   1, 0], inf);
+		}
+
 		//******//
 		// usul //
 		//******//
